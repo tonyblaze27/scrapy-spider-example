@@ -2,13 +2,13 @@
 import scrapy
 from scrapy_spider.items import QuoteItem
 
-class QuotesSpiderSpider(scrapy.Spider):
-    name = 'quotes_spider'
+class AppleSpiderSpider(scrapy.Spider):
+    name = 'apple_spider'
     allowed_domains = ['apple.com']
     start_urls = ['https://www.apple.com/retail/storelist/']
 
     def parse(self, response):
-        quotes = response.xpath("//div[@class='quote']")
+        quotes = response.xpath("//div[@class='toggle']")
         for quote in quotes:
             text = quote.xpath(
                 ".//span[@class='text']/text()").extract_first()
@@ -16,7 +16,7 @@ class QuotesSpiderSpider(scrapy.Spider):
                 ".//small//text()").extract_first()
 
             item = QuoteItem()
-            item["quote"] = text
+            item["toggle"] = text
             item["author"] = author
 
             yield item
